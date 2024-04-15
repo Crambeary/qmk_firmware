@@ -14,6 +14,8 @@
 // Mod-Tap
 #define FAT_Z LSFT_T(KC_Z)
 #define SPC_MEH MT(MOD_MEH, KC_SPC)
+#define ESC_LAY LT(MO(4), KC_ESC)
+#define ENT_LAY LT(MO(3), KC_ENT)
 
 enum alt_keycodes {
     U_T_AUTO = SAFE_RANGE, //USB Extra Port Toggle Auto Detect / Always Active
@@ -29,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker(
         QK_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_EQL,  KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_BSPC, KC_DEL,
         KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_LBRC, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_QUOT, KC_BSLS, KC_HOME,
-        KC_CAPS, HOME_A,  HOME_R,  HOME_S,  HOME_T,  KC_G,    KC_RBRC, KC_M,    HOME_N,  HOME_E,  HOME_I,  HOME_O,           KC_ENT,  KC_PGUP,
+        ESC_LAY, HOME_A,  HOME_R,  HOME_S,  HOME_T,  KC_G,    KC_RBRC, KC_M,    HOME_N,  HOME_E,  HOME_I,  HOME_O,           ENT_LAY, KC_PGUP,
         FAT_Z,   KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_SLSH, KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_RSFT,          KC_UP,   KC_PGDN,
         KC_LCTL, KC_LALT, KC_LGUI,                            SPC_MEH,                            KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT
     ),
@@ -38,8 +40,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SCRL, KC_PAUS, _______, KC_END,
         _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, KC_INS,  _______,          _______, KC_VOLU,
         _______, RGB_TOG, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, KC_MPRV, KC_MNXT, _______,          KC_PGUP, KC_VOLD,
-        _______, _______, _______,                            KC_MPLY,                            _______, _______, KC_HOME, KC_PGDN, KC_END
+        _______, _______, _______,                            KC_MPLY,                            MO(2),   _______, KC_HOME, KC_PGDN, KC_END
     ),
+    [2] = LAYOUT_65_ansi_blocker( // Mouse
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_D, KC_MS_U, _______,          _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______
+    ),
+    [3] = LAYOUT_65_ansi_blocker( // Numbers
+        _______, _______, _______, MO(2),   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_LBRC, KC_7,    KC_8,    KC_9,    KC_RBRC, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_SCLN, KC_4,    KC_5,    KC_6,    KC_EQL,  KC_MINS, _______, _______, _______, _______, _______,          _______, _______,
+        _______, KC_GRV,  KC_1,    KC_2,    KC_3,    KC_BSLS, _______, _______, _______, _______, _______, _______,          _______, _______,
+        _______, _______, _______,                            KC_0,                               _______, _______, _______, _______, _______
+    ),
+    [4] = LAYOUT_65_ansi_blocker( // Nav
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_DOWN, KC_RGHT, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,           _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LEFT, _______, _______, _______,          _______, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______
+    )
     /*
     [X] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
