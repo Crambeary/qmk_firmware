@@ -1,4 +1,6 @@
 #include QMK_KEYBOARD_H
+#include "features/achordion.h"
+
 // Left-hand home row mods
 #define HOME_A LGUI_T(KC_A)
 #define HOME_R LALT_T(KC_R)
@@ -79,6 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define MODS_ALT  (get_mods() & MOD_BIT(KC_LALT) || get_mods() & MOD_BIT(KC_RALT))
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_achordion(keycode, record)) { return false; }
     static uint32_t key_timer;
 
     switch (keycode) {
@@ -172,4 +175,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             return true; //Process all other keycodes normally
     }
+    return true;
+}
+
+void matrix_scan_user(void) {
+  achordion_task();
+}
+
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t* tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t* other_record) {
+    switch (other_keycode) {
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+            other_keycode &= 0xff;  // Get base keycode.
+    }
+    // Allow same-hand holds with non-alpha keys.
+    if (other_keycode > KC_Z) { return true; }
+
+    return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+bool achordion_eager_mod(uint8_t mod) {
+  switch (mod) {
+    case MOD_LSFT:
+    case MOD_RSFT:
+    case MOD_LCTL:
+    case MOD_RCTL:
+      return true;  // Eagerly apply Shift and Ctrl mods.
+
+    default:
+      return false;
+  }
 }
