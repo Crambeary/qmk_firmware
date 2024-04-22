@@ -52,14 +52,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [3] = LAYOUT_65_ansi_blocker( // Numbers
         _______, _______, _______, MO(2),   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, KC_LBRC, KC_7,    KC_8,    KC_9,    KC_RBRC, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, KC_SCLN, KC_4,    KC_5,    KC_6,    KC_EQL,  KC_MINS, _______, _______, _______, _______, _______,          _______, _______,
+        _______, KC_SCLN, KC_4,    KC_5,    KC_6,    KC_EQL,  KC_MINS, KC_BSPC, _______, _______, _______, _______,          _______, _______,
         _______, KC_GRV,  KC_1,    KC_2,    KC_3,    KC_BSLS, _______, _______, _______, _______, _______, _______,          _______, _______,
         _______, _______, _______,                            KC_0,                               _______, _______, _______, _______, _______
     ),
     [4] = LAYOUT_65_ansi_blocker( // Nav
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, KC_DOWN, KC_RGHT, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,           _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_BSPC, KC_HOME, KC_PGDN, KC_PGUP, KC_END,           _______, _______,
         _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LEFT, _______, _______, _______,          _______, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______
     )
@@ -147,6 +147,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               }
             }
             return false;
+
+        case RGUI_T(KC_O):
+            /*
+        This piece of code nullifies the effect of Right Alt when
+        tapping the RGUI_T(KC_O) key.
+        This helps rolling over LALT_T(KC_I) and RGUI_T(KC_O)
+        to obtain the intended "io" instead of "ø".
+        Consequently, ø or any Alt+O shortcuts can only be obtained by tapping RGUI_T(KC_O)
+        and holding LALT_T(KC_R) (which is the left Alt mod tap).
+        */
+
+            if (record->event.pressed && record->tap.count > 0) {
+                if (get_mods() & MOD_BIT(KC_LALT)) {
+                    unregister_mods(MOD_BIT(KC_LALT));
+                    tap_code(KC_I);
+                    tap_code(KC_O);
+                    add_mods(MOD_BIT(KC_LALT));
+                    return false;
+                }
+            }
+            /*else process LALT_T(KC_R) as usual.*/
+            return true;
         default:
             return true; //Process all other keycodes normally
     }
