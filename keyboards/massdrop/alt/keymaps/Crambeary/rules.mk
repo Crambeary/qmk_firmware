@@ -1,6 +1,8 @@
 
 
-AUTO_SHIFT_ENABLE = yes
+AUTO_SHIFT_ENABLE = no
 CAPS_WORD_ENABLE = yes
-MOUSEKEY_ENABLE = yes
-EXTRAKEY_ENABLE = yes
+MOUSEKEY_ENABLE = no
+
+
+SRC += features/achordion.c
